@@ -1,0 +1,83 @@
+<html>
+<head>
+<style>
+.lbl {width:100px;display:inline-block}
+input {margin-right: 10px; width:80px;}
+fieldset {margin-bottom:10px;width:90%; border:1px solid gray;}
+label {border: 0px solid gray; width:100px;}
+.result {font-weight: bold; border: hidden; border-bottom: 1px solid black}
+</style>
+</head>
+<body>
+<h1 style="text-align:center">Coding Calculator</h1>
+<form id="form">
+<p><div class='lbl'>Invoice total</div><input type="text" id="tot" /></p>
+<p><div class='lbl'>Tax %</div><input id='tax'/>
+   <button type='button' style="height:35px; width:70px"  onclick='calc()'>Calc</button>
+   <button type='reset' onclick='byId("form").reset()' style="margin-left:20px">Reset</button>
+</p>
+<fieldset><legend>Water - code 1260</legend>
+<p><div class='lbl'>Water Bottle</div> <input id='w1'/><input id='w2'/><input id='w3'/><input id='w4'/></p>
+<p><div class='lbl'>Deposit</div> <input id='d1'/><input id='d2'/><input id='d3'/><input id='d4'/> $<input class="result" disabled id='wl'/></p>
+</fieldset>
+
+<div id='main'></div>
+<p> code 6240 $<input class="result" disabled id='othr'/></p>
+</form>
+
+<script>
+renderForm();
+
+function renderForm() {
+  var i = 1;
+  var str = "";
+  while (i++ <= 3) {
+    var str = str + `
+ 		<fieldset><legend>Code <input id='c${i}'/> </legend>
+		<p><input id='c${i}1'/><input id='c${i}2'/><input id='c${i}3'/><input id='c${i}4'/> $<input class="result" disabled id='l${i}'/></p>
+		</fieldset>
+    `;
+	byId("main").innerHTML = str;
+  }
+}
+
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function val(id) {
+  return 1*byId(id).value;
+}
+
+function set(id, val) {
+  byId(id).value = val;
+}
+
+function calc() {
+  var tot = val('tot');
+  var plusTax = (val('tax')/100 + 1);
+  // water and deposits
+  var water = val('w1') + val('w2') + val('w3') + val('w4');
+  var dep =  val('d1') + val('d2') + val('d3') + val('d4');
+  var wl = dep + water*plusTax;
+  set('wl', wl.toFixed(2));
+
+  //code 2
+  var code2 = val('c21') + val('c22') + val('c23') + val('c24');
+  set ('l2', (code2 * plusTax).toFixed(2));
+
+  //code 3
+  var code3 = val('c31') + val('c32') + val('c33') + val('c34');
+  set ('l3', (code3 * plusTax).toFixed(2));
+
+  //code 4
+  var code4 = val('c41') + val('c42') + val('c43') + val('c44');
+  set ('l4', (code4 * plusTax).toFixed(2));
+
+  // code 6240
+  var othr = tot - (wl + code2 + code3 + code4);
+	set('othr', othr.toFixed(2));
+}
+
+</script>
+</body></html>
